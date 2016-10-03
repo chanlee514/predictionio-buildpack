@@ -1,1 +1,1 @@
-web: pio eventserver --port ${PORT}
+web: ./bin/pio-start.sh && pio eventserver --port ${PORT}

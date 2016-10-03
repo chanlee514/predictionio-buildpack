@@ -12,6 +12,7 @@ set -u
 PIO_VERSION=0.9.5
 PIO_BUILD=PredictionIO-${PIO_VERSION}
 SPARK_VERSION=spark-1.6.2-bin-hadoop2.6
+ELASTICSEARCH_VERSION=1.4.4
 POSTGRESQL_DRIVER=postgresql-9.4.1209.jar
 
 function error() {
@@ -81,6 +82,12 @@ curl -o "spark-hadoop.tar.gz" -S "http://marsikai.s3.amazonaws.com/${SPARK_VERSI
 mkdir -p "$dist_dir/vendors/spark-hadoop"
 tar -xz -f "spark-hadoop.tar.gz" -C "$dist_dir/vendors/spark-hadoop" --strip-components=1  | indent
 
+topic "Fetch distribution of Elasticsearch"
+curl -o "elasticsearch.tar.gz" -S \
+    "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz"
+mkdir -p "$dist_dir/vendors/elasticsearch"
+tar -xz -f "elasticsearch.tar.gz" -C "$dist_dir/vendors/elasticsearch" --strip-components=1  | indent
+
 topic "Configure PredictionIO"
 if [ -f "${custom_pio_env}" ]
 then
@@ -97,6 +104,7 @@ cp -r .profile.d/* "$BUILD_DIR/.profile.d/" | indent
 # Load the env for the following build steps
 export_env_dir "$ENV_DIR" '^DATABASE_URL$'
 source .profile.d/pio-env.sh
+source ${target_pio_env}
 
 if [ -f "${BUILD_DIR}/engine.json" ]
 then
