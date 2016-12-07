@@ -67,7 +67,7 @@ SPARK_VERSION="spark-${PIO_BUILD_SPARK_VERSION:-1.6.2}-bin-hadoop2.6"
 
 if [ $(requires_apache_predictionio "$BUILD_DIR/template.json") ]
 then
-  PIO_VERSION=0.10.0-incubating
+  PIO_VERSION=0.11.0-SNAPSHOT
   # No special PostgreSQL driver is required
   POSTGRESQL_DRIVER=''
   echo "Using Apache PredictionIO ${PIO_VERSION}" | indent
@@ -82,8 +82,8 @@ fi
 PIO_BUILD=PredictionIO-${PIO_VERSION}
 
 
-# PredictionIO dist tarball URL, expects `.tar.gz` 
-default_url="https://marsikai.s3.amazonaws.com/${PIO_BUILD}.tar.gz"
+# PredictionIO dist tarball URL, expects `.tar.gz`
+default_url="https://s3.amazonaws.com/pio-distribution/${PIO_BUILD}.tar.gz"
 export_env_dir "$ENV_DIR" '^PREDICTIONIO_DIST_URL$'
 url="${PREDICTIONIO_DIST_URL-$default_url}"
 
